@@ -1461,7 +1461,7 @@ onlyDustWallet = unsafeMkMnemonic
     , "need" , "patient" , "wall" , "stamp" , "pass"
     ]
 
--- | A special Shelley Wallet with 200 UTxOs where 100 of them are dust
+-- | A special Shelley Wallet with 200 UTxOs where 100 of them are 1 ADA
 bigDustWallet :: Mnemonic 15
 bigDustWallet = unsafeMkMnemonic
     [ "radar", "scare", "sense", "winner", "little"
@@ -1473,10 +1473,19 @@ shelleyIntegrationTestFunds :: [(Address, Coin)]
 shelleyIntegrationTestFunds = mconcat
     [ seqMnemonics >>= (take 10 . map (, defaultAmt) . addresses)
 
-    , zip (addresses onlyDustWallet) (map Coin [1,1,5,12,1,5,3,10,2,3])
+    , zip (addresses onlyDustWallet) (map Coin [ 1_000_000
+                                               , 1_000_000
+                                               , 5_000_000
+                                               , 12_000_000
+                                               , 1_000_000
+                                               , 5_000_000
+                                               , 3_000_000
+                                               , 10_000_000
+                                               , 2_000_000
+                                               , 3_000_000 ])
 
     , take 100 (map (, defaultAmt) $ addresses bigDustWallet)
-    , take 100 . drop 100 $ map (,Coin 1) $ addresses bigDustWallet
+    , take 100 . drop 100 $ map (,Coin 1_000_000) $ addresses bigDustWallet
 
     , preregKeyWalletFunds
     ]
